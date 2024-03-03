@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_editNoteFragment"
             app:destination="@id/editNoteFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_editStoryFragment"
+            app:destination="@id/editStoryFragment" />
 
     </fragment>
     <fragment
@@ -40,6 +43,19 @@
             android:name="currentNote"
             app:argType="com.example.notes.database.Note" />
 
+
+    </fragment>
+    <fragment
+        android:id="@+id/editStoryFragment"
+        android:name="com.example.notes.fragments.HistoryFragment"
+        android:label="fragment_edit_story"
+        tools:layout="@layout/fragment_edit_story" >
+        <action
+            android:id="@+id/action_editStoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="currentNote"
+            app:argType="com.example.notes.database.Note" />
 
     </fragment>
 </navigation>

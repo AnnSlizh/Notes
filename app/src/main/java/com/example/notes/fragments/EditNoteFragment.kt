@@ -11,8 +11,13 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.example.notes.R
+import com.example.notes.database.HistoryNote
+
 import com.example.notes.database.Note
+import com.example.notes.database.viewModel.HistoryNoteViewModel
+
 import com.example.notes.database.viewModel.NoteViewModel
 import com.example.notes.databinding.FragmentEditNoteBinding
 import com.example.notes.databinding.FragmentHomeBinding
@@ -23,11 +28,12 @@ class EditNoteFragment : Fragment() {
 
     private lateinit var currentNote: Note
 
-    private  val editNoteArgs: EditNoteFragmentArgs by navArgs<EditNoteFragmentArgs>()
+    private val editNoteArgs: EditNoteFragmentArgs by navArgs<EditNoteFragmentArgs>()
 
     private lateinit var saveButton: Button
 
     private lateinit var noteViewModel: NoteViewModel
+    private lateinit var historyNoteViewModel: HistoryNoteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +48,21 @@ class EditNoteFragment : Fragment() {
 
         currentNote = editNoteArgs.currentNote
 
-        view.findViewById<EditText>(R.id.editNoteTitle).setText(currentNote.title)
-        view.findViewById<EditText>(R.id.editNoteDesc).setText(currentNote.description)
+         view.findViewById<EditText>(R.id.editNoteTitle).setText(currentNote.title)
+         view.findViewById<EditText>(R.id.editNoteDesc).setText(currentNote.description)
+
+        val currentId = currentNote.id
+        val currentTitle = currentNote.title
+        val currentDescription = currentNote.description
 
         saveButton = view.findViewById(R.id.saveButton)
         saveButton.setOnClickListener {
+
+            val historyNote =
+                HistoryNote(0, currentId, currentTitle, currentDescription, Calendar.getInstance().time)
+            historyNoteViewModel = ViewModelProvider(this)[HistoryNoteViewModel::class.java]
+            historyNoteViewModel.addNote(historyNote)
+
             saveNote(view)
         }
     }
@@ -67,9 +83,9 @@ class EditNoteFragment : Fragment() {
             noteViewModel.updateNote(note)
 
             Toast.makeText(context, "Note updated", Toast.LENGTH_SHORT).show()
-            Navigation.findNavController(view).navigate(R.id.action_editNoteFragment_to_homeFragment)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_editNoteFragment_to_homeFragment)
         }
     }
-
 
 }

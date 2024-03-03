@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,8 +27,11 @@ class HomeFragment : Fragment() {
     private lateinit var floatingActionButton: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: HomeAdapter
+    private lateinit var toolBarMenu: Toolbar
+
 
     private lateinit var noteViewModel: NoteViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +42,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         floatingActionButton = view.findViewById(R.id.floatingActionButton)
 
@@ -81,6 +87,11 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(it)
             Navigation.findNavController(view).navigate(action)
 
+        }
+
+        adapter.setOnShowHistoryListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToEditStoryFragment(it)
+            Navigation.findNavController(view).navigate(action)
         }
     }
 

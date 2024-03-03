@@ -16,6 +16,7 @@ class HomeAdapter() : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     private var notesLis = emptyList<Note>()
     private var delete: ((Note) -> Unit)? = null
     private var update: ((Note) -> Unit)? = null
+    private var showHistory: ((Note) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.HomeViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.note_row, parent, false)
@@ -44,6 +45,9 @@ class HomeAdapter() : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         holder.itemView.setOnClickListener {
             update?.invoke(currentItem)
         }
+        holder.historyButton.setOnClickListener {
+            showHistory?.invoke(currentItem)
+        }
 
     }
 
@@ -58,6 +62,7 @@ class HomeAdapter() : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         val description: TextView = itemView.findViewById(R.id.tv_description)
         val cardView: CardView = itemView.findViewById(R.id.cardView)
         val deleteButton: ImageButton = itemView.findViewById(R.id.delete_button)
+        val historyButton: ImageButton = itemView.findViewById(R.id.history_button)
 
     }
 
@@ -72,5 +77,9 @@ class HomeAdapter() : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     fun setOnUpdateListener(callback: (Note) -> Unit) {
         this.update = callback
+    }
+
+    fun setOnShowHistoryListener(callback: (Note) -> Unit) {
+        this.showHistory = callback
     }
 }
